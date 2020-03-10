@@ -1,0 +1,10 @@
+---
+- name: Gather the rpm package facts
+  package_facts:
+    manager: auto
+
+- name: Check for dependencies
+  fail:
+    msg: "Missing package: {{ item }}"
+  when: item not in ansible_facts.packages
+  with_items: "{{ dependencies }}"

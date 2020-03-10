@@ -1,0 +1,20 @@
+---
+- name: Decompress OpenSSL
+  unarchive: 
+    src: openssl-{{ openssl_version }}.tar.gz
+    dest: "{{ src_dir }}"
+
+- name: Decompress unixODBC
+  unarchive: 
+    src: unixODBC-{{ unixodbc_version }}.tar.gz
+    dest: "{{ src_dir }}"
+
+- name: Decompress Cyrus Sasl
+  unarchive:
+    src: cyrus-sasl-{{ cyrus_sasl_version }}.tar.gz
+    dest: "{{ src_dir }}"
+
+- name: Decompress openldap
+  unarchive: 
+    src: openldap-{{ openldap_version }}.tgz
+    dest: "{{ src_dir }}"

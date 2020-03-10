@@ -1,0 +1,24 @@
+src_dir: /appl/src/
+dependencies:
+  - libtool
+  - libtool-ltdl-devel
+openssl_version: 1.1.1d
+openssl_install_dir: /appl/openssl/
+openssl_config_args: --prefix={{ openssl_install_dir }}
+unixodbc_version: 2.3.7
+unixodbc_install_dir: /appl/unixodbc/
+unixodbc_config_args: --prefix={{ unixodbc_install_dir }}
+cyrus_sasl_version: 2.1.27
+cyrus_sasl_install_dir: /appl/cyrus_sasl/
+cyrus_sasl_config_args: --prefix={{ cyrus_sasl_install_dir }}
+openldap_version: 2.4.49
+openldap_install_dir: /appl/openldap/
+openldap_config_args: --prefix={{ openldap_install_dir }} --enable-spasswd --enable-modules --enable-slapi --enable-backends=no --disable-bdb --enable-ldap --enable-meta --enable-sql --enable-overlays --with-cyrus-sasl --with-odbc=unixodbc
+working_env: 
+  CC: cc
+  CFLAGS: -g -O2
+  CPPFLAGS: -I/appl/openssl/include -I/appl/unixodbc/include -I/appl/cyrus_sasl/include
+  LDFLAGS: -L/appl/openssl/lib -Wl,-rpath,/appl/openssl/lib -L/appl/unixodbc/lib -L/appl/cyrus_sasl/lib
+  LIBS: -lresolv
+  CPP: cc -E
+
