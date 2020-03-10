@@ -4,9 +4,10 @@
     manager: auto
 
 - name: Check and install dependencies
-  shell: |
-    {{ sudo_cmd }}
-    yum install -y {{ dependencies }}
-    exit
-  when: item not in ansible_facts.packages
-  with_items: "{{ dependencies }}"
+  yum:
+    name: "{{ dependencies }}"
+    state: present
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
