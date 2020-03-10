@@ -2,6 +2,7 @@
 - name: Compile OpenSSL
   environment: "{{ working_env }}"
   shell: |
+    make clean
     ./config {{ openssl_config_args }}
     make
     make install
@@ -22,6 +23,7 @@
 - name: Compile UnixODBC
   environment: "{{ working_env }}"
   shell: |
+    make distclean
     ./configure {{ unixodbc_config_args }}
     make
     make install
@@ -42,6 +44,7 @@
 - name: Compile Cyrus SASL
   environment: "{{ working_env }}"
   shell: |
+    make clean
     ./configure {{ cyrus_sasl_config_args }}
     make
     make install
@@ -62,6 +65,7 @@
 - name: Compile OpenLDAP
   environment: "{{ working_env }}"
   shell: |
+    make distclean
     ./configure {{ openldap_config_args }}
     make depend
     make
