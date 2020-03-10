@@ -3,8 +3,10 @@
   package_facts:
     manager: auto
 
-- name: Check for dependencies
-  fail:
-    msg: "Missing package: {{ item }}"
+- name: Check and install dependencies
+  shell: |
+    {{ sudo_cmd }}
+    yum install -y {{ dependencies }}
+    exit
   when: item not in ansible_facts.packages
   with_items: "{{ dependencies }}"
