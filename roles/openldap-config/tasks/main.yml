@@ -1,0 +1,8 @@
+---
+- import_tasks: config_cnconfig.yml
+  tags:
+    - configure:cnconfig
+
+- import_tasks: config_database.yml
+  tags:
+    - configure:database

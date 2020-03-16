@@ -1,0 +1,27 @@
+---
+- name: Import data
+  shell: |
+    ./slapadd -n 1 -F {{ cnconfig_path }} -l {{ tmp_dir_path }}/data.ldif
+  args:
+    chdir: "{{ openldap_path}}sbin/"
+  register: result
+
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags:
+    - never
+    - debug
+    - debug:import:data 
+
+- name: Modify mdb permissions for checks (1)
+  file:
+    path: "{{ database_path }}{{ item }}/data.mdb"
+    mode: '0640'
+  with_items: "{{ suffixes }}"
+
+- name: Modify mdb permissions for checks (2)
+  file:
+    path: "{{ database_path }}{{ item }}/lock.mdb"
+    mode: '0660'
+  with_items: "{{ suffixes }}"

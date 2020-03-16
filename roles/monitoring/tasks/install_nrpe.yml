@@ -1,0 +1,32 @@
+---
+- name: Create a directory if it does not exist
+  file:
+    path: "{{ src_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Decompress NRPE
+  unarchive:
+    src: linux-nrpe-agent.tar.gz
+    dest: "{{ src_dir }}"
+
+- name: Install NRPE
+  shell: |
+    ./fullinstall -n -i "{{ nrpe_ips }}"
+  args: 
+    chdir: "{{ src_dir }}/linux-nrpe-agent"
+  register: result
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
+  tags: 
+    - install:nrpe 
+
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags:
+    - never
+    - debug
+    - debug-install:nrpe

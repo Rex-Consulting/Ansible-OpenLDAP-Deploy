@@ -1,0 +1,7 @@
+cnconfig_file: cnconfig.ldif
+openldap_path: /appl/openldap/
+cnconfig_path: "{{ openldap_path}}etc/openldap/slapd.d"
+database_path: /appl/openldap/var/openldap-data/
+suffixes:
+  - Example
+tmp_dir_path: /appl/tmp

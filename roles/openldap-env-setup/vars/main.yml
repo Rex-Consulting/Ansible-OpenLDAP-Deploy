@@ -1,0 +1,22 @@
+dependencies:
+  - rsyslog
+  - logrotate
+sudo_cmd: sudo su -
+openldap_dir: /appl/openldap/
+cert_dir: "{{ openldap_dir }}etc/openldap/tls"
+cacert_file: cacert.pem
+cert_file: ldap.pem
+key_file: ldap.key
+cert_file_owner: webadm
+cert_file_group: webadm
+ldap_conf_path: "{{ openldap_dir }}etc/openldap/"
+sasl_dir: /appl/cyrus_sasl/
+cyrus_sasl_target: ldapi://
+cyrus_sasl_bind_dn: cn=manager,dc=local
+cyrus_sasl_target_pw: secret
+cyrus_sasl_mux_path: "{{ sasl_dir }}var/run/mux"
+cyrus_sasl_auth_log_path: "{{ sasl_dir }}logs/auth.log"
+openldap_log_path: "{{ openldap_dir }}logs/slapd.log"
+backup_dir: /appl/backup/
+backup_script: backup.sh
+forward_log_server: syslog.test.com

@@ -1,0 +1,52 @@
+---
+- name: Make database directory
+  file:
+    path: "{{ database_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Make a directory for each suffix
+  file:
+    path: "{{ database_path }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  with_items: "{{ suffixes }}"
+
+- name: Make a temporary config dir
+  file:
+    path: "{{ tmp_dir_path }}"
+    state: directory
+    mode: '0777'
+
+- name: Copy cnconfig.ldif to temporary config dir
+  copy:
+    src: cnconfig.ldif
+    dest: "{{ tmp_dir_path }}"
+    mode: '0755' 
+
+- name: Copy data.ldif to temporary config dir
+  copy:
+    src: data.ldif
+    dest: "{{ tmp_dir_path }}"
+    mode: '0755' 
+
+- name: Make slapd.d dir
+  file:
+    path: "{{ cnconfig_path }}"
+    state: directory
+    mode: '0775'
+
+- name: Import cn=config
+  shell: |
+    ./slapadd -n 0 -F {{ cnconfig_path }} -l {{ tmp_dir_path }}/cnconfig.ldif
+  args:
+    chdir: "{{ openldap_path }}sbin/"
+  register: result
+
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags:
+    - never
+    - debug
+    - debug:import:cnconfig  

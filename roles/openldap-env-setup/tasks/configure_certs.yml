@@ -1,0 +1,28 @@
+---
+- name: Create TLS dir if it does not already exist
+  file:
+    path: "{{ cert_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy cert files over
+  copy:
+    src: "{{ item }}"
+    dest: "{{ cert_dir }}"
+    owner: "{{ cert_file_owner }}"
+    group: "{{ cert_file_group }}"
+    mode: '0644'
+  with_items:
+    - "{{ cacert_file }}"
+    - "{{ cert_file }}"
+    - "{{ key_file }}"
+
+- name: Update ldap.conf
+  template:
+    src: ldap.conf.j2
+    dest: "{{ ldap_conf_path }}ldap.conf"
+    mode: '0644'
+  tags: 
+    - never
+    - systemfile:updates
+    - config:ldapconf

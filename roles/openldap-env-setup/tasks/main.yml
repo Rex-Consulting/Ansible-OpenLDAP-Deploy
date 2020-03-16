@@ -1,0 +1,20 @@
+---
+- import_tasks: check_dependencies.yml
+  tags:
+    - check:dependencies
+
+- import_tasks: configure_certs.yml
+  tags:
+    - configure:certs
+
+- import_tasks: configure_sasl.yml
+  tags:
+    - configure:sasl
+
+- import_tasks: configure_logging.yml
+  tags:
+    - configure:logging
+
+- import_tasks: configure_backup.yml
+  tags:
+    - configure:backup

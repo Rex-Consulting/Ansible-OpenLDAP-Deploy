@@ -1,0 +1,37 @@
+/var/log/cron
+/var/log/maillog
+/var/log/messages
+/var/log/secure
+/var/log/spooler
+{
+    missingok
+    sharedscripts
+    postrotate
+	/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}
+
+{{ openldap_log_path }} {
+    su webadm webadm
+    size=2048M
+    rotate 50
+    missingok
+    create 640 webadm webadm
+    postrotate
+      /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+      /bin/kill -HUP `cat /var/run/rsyslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+    compress
+}
+
+{{ cyrus_sasl_auth_log_path }} {
+    size=2048M
+    rotate 50
+    missingok
+    create 640 webadm webadm
+    postrotate
+      /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+      /bin/kill -HUP `cat /var/run/rsyslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+    compress
+}

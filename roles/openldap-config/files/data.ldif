@@ -1,0 +1,7 @@
+dn: dc=example,dc=com
+objectClass: top
+objectClass: organization
+objectClass: dcObject
+o: example
+dc: example
+description: Sample ldif

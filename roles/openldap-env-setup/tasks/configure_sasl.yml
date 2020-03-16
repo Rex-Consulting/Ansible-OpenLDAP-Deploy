@@ -1,0 +1,52 @@
+---
+- name: Create sasl var dir if it does not already exist
+  file:
+    path: "{{ sasl_dir }}var"
+    state: directory
+    mode: '0775'
+
+- name: Create sasl run dir if it does not already exist
+  file:
+    path: "{{ sasl_dir }}var/run"
+    state: directory
+    mode: '0775'
+
+- name: Create sasl pid file
+  file:
+    path: "{{ sasl_dir }}/var/run/saslauthd.pid"
+    state: touch
+    mode: '0664'
+
+- name: Create sasl log dir if it does not already exist
+  file:
+    path: "{{ sasl_dir }}logs"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
+
+- name: Create auth.log file
+  file:
+    path: "{{ sasl_dir }}logs/auth.log"
+    state: touch
+    mode: '0700'
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
+
+- name: Generate saslauthd.conf
+  template:
+    src: saslauthd.conf.j2
+    dest: "{{ sasl_dir }}lib/sasl2/saslauthd.conf"
+    mode: '0664'
+
+- name: Generate sasl slapd.conf
+  template:
+    src: sasl_slapd.conf.j2
+    dest: "{{ sasl_dir }}lib/sasl2/slapd.conf"
+    mode: '0664'

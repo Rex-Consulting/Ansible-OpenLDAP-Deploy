@@ -1,0 +1,57 @@
+---
+- name: Create openldap log dir if it does not already exist
+  file:
+    path: "{{ openldap_dir }}logs"
+    state: directory
+    mode: '0755'
+
+- name: Update rsyslog.conf to include local4
+  template:
+    src: rsyslog.conf.j2
+    dest: /etc/rsyslog.conf
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
+  tags:
+    - never
+    - systemfile:updates
+    - systemfile:updates:logging
+    - config:rsyslog
+
+- name: Update logrotate syslog configure
+  template:
+    src: syslog_rotate.j2
+    dest: /etc/logrotate.d/syslog
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
+  tags:
+    - never
+    - systemfile:updates
+    - systemfile:updates:logging
+    - config:logrotate
+
+- name: Update logrotate cron job
+  copy:
+    src: logrotate
+    dest: /etc/cron.daily/logrotate
+    owner: root
+    group: root
+    mode: '0700'
+  become: yes
+  become_method: su
+  become_exe: "{{ sudo_cmd }}"
+  become_flags: ""
+  tags:
+    - never
+    - systemfile:updates
+    - systemfile:updates:logging
+    - config:rotatecron

@@ -1,0 +1,13 @@
+ldap_servers: {{ cyrus_sasl_target  }}
+ldap_search_base: ou=%d,dc=local
+ldap_filter: (sAMAccountName=%U)
+ldap_bind_dn: {{ cyrus_sasl_bind_dn }}
+ldap_password: {{ cyrus_sasl_target_pw }}
+ldap_timeout: 10
+ldap_deref: never
+ldap_restart: yes
+ldap_scope: sub
+ldap_use_sasl: no
+ldap_start_tls: no
+ldap_version: 3
+ldap_auth_method: bind

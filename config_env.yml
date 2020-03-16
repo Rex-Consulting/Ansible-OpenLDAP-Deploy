@@ -1,0 +1,6 @@
+---
+# Configure environment for your OpenLDAP server
+- hosts: all
+  roles: 
+    - openldap-env-setup
+    - monitoring
