@@ -41,10 +41,10 @@
     - debug
     - debug-install:unixodbc
 
-- name: Compile Cyrus SASL
+- name: Compile Cyrus SASL (for sasl libs)
   environment: "{{ working_env }}"
   shell: |
-    make clean
+    make distclean
     ./configure {{ cyrus_sasl_config_args }}
     make
     make install
@@ -60,7 +60,7 @@
   tags: 
     - never
     - debug
-    - debug-install:cyrus_sasl
+    - debug-install:cyrus_sasl_1
 
 - name: Compile OpenLDAP
   environment: "{{ working_env }}"
@@ -83,3 +83,24 @@
     - never
     - debug
     - debug-install:openldap
+
+- name: Compile Cyrus SASL (with ldap mechanism)
+  environment: "{{ working_env }}"
+  shell: |
+    make distclean
+    ./configure {{ cyrus_sasl_config_args }}
+    make
+    make install
+  args:
+    chdir: "{{ src_dir }}cyrus-sasl-{{ cyrus_sasl_version }}"
+  register: result
+  tags: 
+    - install:cyrus_sasl
+  
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags: 
+    - never
+    - debug
+    - debug-install:cyrus_sasl_2
